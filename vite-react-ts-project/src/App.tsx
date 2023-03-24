@@ -1,5 +1,6 @@
 import { KeyboardEvent, MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Counter from "./components/Counter";
+import { CounterProvider, initState } from "./context/CounterContext";
 
 interface User {
   id: number,
@@ -42,12 +43,9 @@ function App() {
 
   return (
     <div className="App">
-      {/* <h1>{count}</h1>
-      <button onClick={addOne}>Add</button>
-      <h2>{result}</h2>
-      <input ref={inputRef} type="text" /> */}
-
-      <Counter>{(num: number) => <>Current Count: {num}</>}</Counter>
+      <CounterProvider count={initState.count} text={initState.text}>
+        <Counter>{(num: number) => <>Current Count: {num}</>}</Counter>
+      </CounterProvider>
     </div> 
   )
 }
