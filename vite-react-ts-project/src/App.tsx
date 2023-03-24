@@ -1,21 +1,52 @@
-import { useState } from "react";
-import Heading from "./components/Heading";
-import Section from "./components/Section";
-import Counter from "./components/Counter";
-import List from "./components/List";
+import { KeyboardEvent, MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+interface User {
+  id: number,
+  usernames: string,
+}
+
+type fibFunc = (n: number) => number;
+
+const fib: fibFunc = (n: number) => {
+  if(n < 2) return n;
+  return fib(n - 1) + fib(n - 2);
+}
+
+const myNum: number = 37;
 
 function App() {
-  const [ count, setCount ] = useState<number>(1)
+  const [ count, setCount ] = useState<number>(0);
+  const [ users, setUsers ] = useState<User[] | null>(null);
+
+  const inputRef = useRef<HTMLInputElement>(null!);
+
+  console.log(inputRef?.current);
+  console.log(inputRef?.current?.value);
+
+  useEffect(() => {
+    console.log('mounting');
+    console.log('Users: ', users);
+    
+    return () => console.log('unmounting');
+  }, [users]);
+
+  const addOne = useCallback(
+    (e: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>): void => 
+    setCount(prev => prev + 1)
+  , [])
+
+  const result = useMemo<number>(() => 
+    fib(myNum)
+  , [myNum]);
 
   return (
-    <>
-      <Heading title={"Hello"} />
-      <Section title={"Subheading"}>
-        Welcome
-      </Section>
-      <Counter setCount={setCount}>Count is {count}</Counter>
-      <List items={["☕ Coffee", "🌮 Tacos", "💻 Code"]} render={(item: string) => <span className="gold">{item}</span>} />
-    </>
+    <div className="App">
+      <h1>{count}</h1>
+      <button onClick={addOne}>Add</button>
+      <h2>{result}</h2>
+      <input ref={inputRef} type="text" />
+    </div>
+      
   )
 }
 
