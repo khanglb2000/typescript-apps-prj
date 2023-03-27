@@ -12,17 +12,17 @@ const initState: ProductType[] = [
     {
         "sku": "JurassicWorld",
         "name": "Widget",
-        "price": 9.99
+        "price": 500000
     },
     {
-        "sku": "JurassicWorld",
+        "sku": "Marvel",
         "name": "Premium Widget",
-        "price": 19.99
+        "price": 100000000000
     },
     {
-        "sku": "JurassicWorld",
+        "sku": "ferrari",
         "name": "Deluxe Widget",
-        "price": 29.99
+        "price": 36700000000
     }
 ]
 

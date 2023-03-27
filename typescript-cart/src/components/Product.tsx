@@ -1,6 +1,6 @@
 import { ProductType } from "../context/ProductsProvider";
 import { ReducerAction, ReducerActionType } from "../context/CartProvider";
-import { ReactElement } from "react";
+import { memo, ReactElement } from "react";
 
 type PropsType = {
     product: ProductType,
@@ -22,7 +22,9 @@ const Product = ({ product, dispatch, REDUCER_ACTIONS, inCart}: PropsType): Reac
   const content = (
     <article className="product">
         <h3>{product.name}</h3>
-        <img src={img} alt={product.name} className="product__img" />
+        <div style={{backgroundColor: 'transparent', height: 200, width: 200}}>
+          <img src={img} alt={product.name} className="product__img"/>
+        </div>
         <p>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'vnd' }).format(product.price)}{itemInCart}</p>
         <button onClick={onAddToCart}>Add to Cart</button>
     </article>
@@ -31,4 +33,14 @@ const Product = ({ product, dispatch, REDUCER_ACTIONS, inCart}: PropsType): Reac
   return content;
 }
 
-export default Product
+function areProductsEqual({ product: prevProduct, inCart: prevInCart}: PropsType, { product: nextProduct, inCart: nextInCart}: PropsType) {
+  return (
+    Object.keys(prevProduct).every(key => {
+      return prevProduct[key as keyof ProductType] === nextProduct[key as keyof ProductType]
+    }) && prevInCart === nextInCart
+  )
+}
+
+const MemorizedProduct = memo<typeof Product>(Product, areProductsEqual);
+
+export default MemorizedProduct;
